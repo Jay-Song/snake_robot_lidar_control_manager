@@ -1,0 +1,4 @@
+lidar_joint :   # MX-28
+  return_delay_time     :  10    # item name : value 
+  goal_velocity         : 100
+  position_p_gain       :  64

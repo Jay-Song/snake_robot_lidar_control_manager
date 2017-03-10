@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<launch>       
+  <arg name="use_lidar"                default="true"/>
+
+  <param name="gazebo"                   value="false"    type="bool"/>
+  <param name="gazebo_robot_name"        value="snake_robot"/>
+    
+  <param name="offset_file_path"         value="$(find snake_robot_lidar_control_manager)/config/offset.yaml"/>
+  <param name="robot_file_path"          value="$(find snake_robot_lidar_control_manager)/config/SNAKE_ROBOT.robot"/>
+  <param name="init_file_path"           value="$(find snake_robot_lidar_control_manager)/config/dxl_init.yaml"/>
+    
+  <!-- lidar -->    
+  <include file="$(find snake_robot_description)/launch/snake_robot_control_laser.launch" if="$(arg use_lidar)"/> 
+    
+  <!-- snake_robot_lidar_control_manager -->
+  <node name="snake_robot_lidar_control_manager" pkg="snake_robot_lidar_control_manager" type="snake_robot_lidar_control_manager" output="screen"/>
+    
+  <!-- Robot Model & TF -->
+  <include file="$(find snake_robot_description)/launch/snake_robot_control_pc.launch"/> 
+</launch>

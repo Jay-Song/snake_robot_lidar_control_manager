@@ -1,0 +1,5 @@
+offset:
+  lidar_joint: 0
+
+init_pose_for_offset_tuner:
+  lidar_joint: 0
