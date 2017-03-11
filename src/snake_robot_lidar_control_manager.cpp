@@ -5,8 +5,12 @@
  *      Author: Crowban
  */
 
+#include <std_msgs/String.h>
+
 #include "robotis_controller/robotis_controller.h"
 #include "snake_robot_lidar_control_module/snake_robot_lidar_control.h"
+
+ros::Publisher g_enable_ctrl_module_pub;
 
 using namespace heroehs;
 
@@ -22,6 +26,9 @@ int main(int argc, char **argv)
   std::string offset_file = nh.param<std::string>("offset_file_path", "");
   std::string robot_file  = nh.param<std::string>("robot_file_path", "");
   std::string init_file   = nh.param<std::string>("init_file_path", "");
+
+  /* Set Publisher */
+  g_enable_ctrl_module_pub = nh.advertise<std_msgs::String>("/robotis/enable_ctrl_module", 5);
 
   if(robot_file == "")
   {
@@ -43,6 +50,13 @@ int main(int argc, char **argv)
   controller->addMotionModule((robotis_framework::MotionModule*)SnakeRobotLidarControl::getInstance());
 
   controller->startTimer();
+
+  sleep(1);
+
+  // Set Module to enable
+  std_msgs::String msg;
+  msg.data = SnakeRobotLidarControl::getInstance()->getModuleName();
+  g_enable_ctrl_module_pub.publish(msg);
 
   while(ros::ok())
   {
